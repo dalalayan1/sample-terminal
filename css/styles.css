@@ -9,7 +9,11 @@ body {
 }
 
 div{
-	float: left
+	float: left;
+}
+
+.copy {
+	display: none;
 }
 
 .box {
@@ -20,5 +24,5 @@ div{
 	margin-left: 10px;
 }
 .display-none {
-	display: none;
+	
 }
