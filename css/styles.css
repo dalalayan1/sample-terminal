@@ -16,13 +16,26 @@ div{
 	display: none;
 }
 
+.left {
+	left: inherit;
+}
+
+.right {
+	right: 0;
+}
+
+.name {
+	display:none;
+}
+
 .box {
 	height: 20px;
 	width: 5px;
 	background: green;
-	float: right;
-	margin-left: 10px;
+	position: absolute;
+	bottom: 0;
+	right: 0;
 }
-.display-none {
-	
+.paste {
+	position: relative;
 }

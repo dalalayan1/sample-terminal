@@ -3,37 +3,43 @@ var AT = AT || {};
 $(document).ready(function(){
 	var copyArray = $('.copy');
 	var copyText = '';
+	var name = $('.name');
 	var paste = $('.paste');
 	var box = $('.box');
 	var count = 0;
 	var lengthArray = [];
+	var begin = 0;
 
-	for(var i=0;i<copyArray.length;i++){
-		if(i==copyArray.length-1){
-			copyText = copyText + $($(copyArray)[i]).text();
+	function showmsg(text,i=1){
+			setTimeout(function() {
+					paste.append('<div>' + text + '</div><br>');
+				
+			}, 300*i);
+	}
+
+	function showchars(char,ind,length){
+		if(ind == 0){
+			paste.append('<span>'+char);
+		}
+		else if(ind==length-1){
+			paste.append(char+'</span>');
 		}
 		else{
-			copyText = copyText + $($(copyArray)[i]).text() + '\n';
+			paste.append();
 		}
 		
 	}
-	
-	console.log(copyText);
-	
-	var copyTextLength = copyText.length;
 
-	var	a = setInterval(function() {
-	    	if(count<=copyTextLength){
-	    			paste.append(copyText[count]);
-	    	}
-	    	else{
-	    		return;
-	    	}
-	    	count++;
-	    },100);
+	showmsg($(name).text());
+	var command = 'intro';
+	for(var i =0;i<command.length;i++){
+		showchars(command[i],i+1,command.length)
+	}
+	for(var i =0;i<copyArray.length;i++){
+		showmsg($(copyArray[i]).text(),i+2);
+	}
 
-
-	var b = setInterval(function() {
+	setInterval(function() {
 	    	
     			if (box.css('visibility') == 'hidden') {
 	            	box.css('visibility', 'visible');
