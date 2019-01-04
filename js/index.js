@@ -1,9 +1,5 @@
 var AT = AT || {};
 
-// $(document).ready(function(){
-	
-// });
-
 window.onload = function() {
 	var box = document.getElementById("box"),
 		pasteBox = document.getElementById("paste"),
@@ -16,26 +12,36 @@ window.onload = function() {
 		countIdx = 0,
 		latestInput = '';
 
-	texts.forEach(function(eachText, outerIdx) {
-		charsArr = Array.from(eachText.innerText);
-		charsArr.forEach(function(char, innerIdx) {
-			countIdx++;
-			setTimeout(function() {
-				pasteBox.contains(box) && pasteBox.removeChild(box);
-				pasteBox.innerHTML = pasteBox.innerHTML + char;
-				pasteBox.appendChild(box);
-				if (innerIdx === texts[outerIdx].innerHTML.length - 1) {
-					if(outerIdx == texts.length - 1) {
-						resetCommandLine();
+	function initializeAutoTyping() {
+		texts.forEach(function(eachText, outerIdx) {
+			charsArr = Array.from(eachText.innerText);
+			charsArr.forEach(function(char, innerIdx) {
+				countIdx++;
+				setTimeout(function() {
+					pasteBox.contains(box) && pasteBox.removeChild(box);
+					pasteBox.innerHTML = pasteBox.innerHTML + char;
+					pasteBox.appendChild(box);
+					if (innerIdx === texts[outerIdx].innerHTML.length - 1) {
+						if(outerIdx == texts.length - 1) {
+							resetCommandLine();
+						}
+						else {
+							pasteBox.contains(box) && pasteBox.removeChild(box);
+							pasteBox.innerHTML = pasteBox.innerHTML + '</br>';
+						}
 					}
-					else {
-						pasteBox.contains(box) && pasteBox.removeChild(box);
-						pasteBox.innerHTML = pasteBox.innerHTML + '</br>';
-					}
-				}
-			}, countIdx * 100);
+				}, countIdx * 100);
+			});
 		});
-	});
+	}
+
+	function init() {
+		initializeAutoTyping();
+	}
+
+	function focusUserInput() {
+		userInput.focus();
+	}
 
 	function resetCommandLine() {
 		pasteBox.contains(box) && pasteBox.removeChild(box);
@@ -47,13 +53,13 @@ window.onload = function() {
 		pasteBox.appendChild(userInputVal);
 		pasteBox.appendChild(box);
 		box.classList.add("blink");
-		acceptInputFromUser();
+		focusUserInput();
 	}
 
-	function acceptInputFromUser() {
-		//append input to read user data
-		userInput.focus();
-	}
+	document.addEventListener("click", function(evt) {
+		evt.preventDefault();
+		focusUserInput();
+	});
 
 	userInput.addEventListener("keyup", function(evt) {
 		userInputVal.innerHTML = userInputVal.innerHTML + evt.target.value;
@@ -64,8 +70,24 @@ window.onload = function() {
 	userInputForm.addEventListener("submit", function(evt) {
 		evt.preventDefault();
 		console.log(latestInput);
+		handleInput(latestInput);
 		latestInput = '';
 		resetCommandLine();
 	});
 
+	const contentsArr = ["Resume","Pic","Skills","About"]
+
+	function handleInput(latestInput) {
+		pasteBox.contains(box) && pasteBox.removeChild(box);
+		pasteBox.innerHTML = pasteBox.innerHTML + '</br>';
+		switch(latestInput) {
+			case 'ls':
+				contentsArr.forEach(content => pasteBox.innerHTML = pasteBox.innerHTML + content + " ");
+				break;
+			default:
+				pasteBox.innerHTML = pasteBox.innerHTML + '-bash: ' + latestInput +': command not found';
+		}
+	}
+
+	init();
 };

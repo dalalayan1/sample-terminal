@@ -5,6 +5,7 @@
 
 body {
 	background: black;
+	font-family: monospace;
 	
 }
 
@@ -33,8 +34,8 @@ div{
 }
 
 
-.paste .line:last-child {
-	position: relative;
+.paste {
+	white-space: pre;
 }
 
 .box {
