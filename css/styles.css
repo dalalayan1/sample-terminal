@@ -12,8 +12,16 @@ div{
 	float: left;
 }
 
-.copy {
-	display: none;
+.hide {
+	display:none;
+}
+
+.shadow {
+	opacity: 0;
+}
+
+.position-right {
+	float: right;
 }
 
 .left {
@@ -24,9 +32,6 @@ div{
 	right: 0;
 }
 
-.hide {
-	display:none;
-}
 
 .paste .line:last-child {
 	position: relative;

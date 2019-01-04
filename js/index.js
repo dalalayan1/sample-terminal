@@ -8,9 +8,13 @@ window.onload = function() {
 	var box = document.getElementById("box"),
 		pasteBox = document.getElementById("paste"),
 		name = document.getElementById("name"),
+		userInput = document.getElementById("takeInput"),
+		userInputForm = document.getElementById("userInputForm"),
 		texts = Array.from(document.getElementsByClassName("copy")),
+		userInputVal,
 		charsArr,
-		countIdx = 0;
+		countIdx = 0,
+		latestInput = '';
 
 	texts.forEach(function(eachText, outerIdx) {
 		charsArr = Array.from(eachText.innerText);
@@ -24,8 +28,11 @@ window.onload = function() {
 					pasteBox.contains(box) && pasteBox.removeChild(box);
 					pasteBox.innerHTML = pasteBox.innerHTML + '</br>';
 					if(outerIdx == texts.length - 1) {
+						userInputVal = document.createElement("span");
+						userInputVal.id = "userInputVal";
 						name.classList.remove("hide");
 						pasteBox.appendChild(name);
+						pasteBox.appendChild(userInputVal);
 						pasteBox.appendChild(box);
 						box.classList.add("blink");
 						acceptInputFromUser();
@@ -38,6 +45,19 @@ window.onload = function() {
 
 	function acceptInputFromUser() {
 		//append input to read user data
+		userInput.focus();
 	}
+
+	userInput.addEventListener("keyup", function(evt) {
+		userInputVal.innerHTML = userInputVal.innerHTML + evt.target.value;
+		latestInput = userInputVal.innerHTML;
+		evt.target.value = '';
+	});
+
+	userInputForm.addEventListener("submit", function(evt) {
+		evt.preventDefault();
+		console.log(latestInput);
+		latestInput = '';
+	});
 
 };
