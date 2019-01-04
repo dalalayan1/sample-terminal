@@ -25,23 +25,30 @@ window.onload = function() {
 				pasteBox.innerHTML = pasteBox.innerHTML + char;
 				pasteBox.appendChild(box);
 				if (innerIdx === texts[outerIdx].innerHTML.length - 1) {
-					pasteBox.contains(box) && pasteBox.removeChild(box);
-					pasteBox.innerHTML = pasteBox.innerHTML + '</br>';
 					if(outerIdx == texts.length - 1) {
-						userInputVal = document.createElement("span");
-						userInputVal.id = "userInputVal";
-						name.classList.remove("hide");
-						pasteBox.appendChild(name);
-						pasteBox.appendChild(userInputVal);
-						pasteBox.appendChild(box);
-						box.classList.add("blink");
-						acceptInputFromUser();
+						resetCommandLine();
+					}
+					else {
+						pasteBox.contains(box) && pasteBox.removeChild(box);
+						pasteBox.innerHTML = pasteBox.innerHTML + '</br>';
 					}
 				}
 			}, countIdx * 100);
 		});
 	});
 
+	function resetCommandLine() {
+		pasteBox.contains(box) && pasteBox.removeChild(box);
+		pasteBox.innerHTML = pasteBox.innerHTML + '</br>';
+		userInputVal = document.createElement("span");
+		userInputVal.id = "userInputVal";
+		name.classList.remove("hide");
+		pasteBox.appendChild(name);
+		pasteBox.appendChild(userInputVal);
+		pasteBox.appendChild(box);
+		box.classList.add("blink");
+		acceptInputFromUser();
+	}
 
 	function acceptInputFromUser() {
 		//append input to read user data
@@ -58,6 +65,7 @@ window.onload = function() {
 		evt.preventDefault();
 		console.log(latestInput);
 		latestInput = '';
+		resetCommandLine();
 	});
 
 };
