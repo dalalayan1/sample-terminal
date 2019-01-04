@@ -24,18 +24,32 @@ div{
 	right: 0;
 }
 
-.name {
+.hide {
 	display:none;
 }
 
-.box {
-	height: 20px;
-	width: 5px;
-	background: green;
-	position: absolute;
-	bottom: 0;
-	right: 0;
-}
-.paste {
+.paste .line:last-child {
 	position: relative;
+}
+
+.box {
+	height: 25px;
+    width: 5px;
+    background: green;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.blink {
+	animation: blink 800ms infinite;
+	opacity: 1;
+}
+
+@keyframes blink {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
 }
