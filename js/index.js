@@ -8,10 +8,10 @@ window.onload = function() {
 		userInput = document.getElementById("takeInput"),
 		userInputForm = document.getElementById("userInputForm"),
 		texts = Array.from(document.getElementsByClassName("copy")),
-		userInputVal,
 		charsArr,
 		countIdx = 0,
-		latestInput = '';
+		latestInput = '',
+		userInputCounter = 0;;
 
 	function initializeAutoTyping() {
 		texts.forEach(function(eachText, outerIdx) {
@@ -52,7 +52,6 @@ window.onload = function() {
 		  };
 		  xhttp.open(method, BASE_URL + url + '?payload=' + param, true);
 		  xhttp.send();
-		//   xhttp.setRequestHeader("Access-Control-Allow-Origin", "*");
 	}
 
 	function focusUserInput() {
@@ -62,8 +61,8 @@ window.onload = function() {
 	function resetCommandLine() {
 		pasteBox.contains(box) && pasteBox.removeChild(box);
 		pasteBox.innerHTML = pasteBox.innerHTML + '</br>';
-		userInputVal = document.createElement("span");
-		userInputVal.id = "userInputVal";
+		const userInputVal = document.createElement("span");
+		userInputVal.id = `userInputVal${++userInputCounter}`;
 		name.classList.remove("hide");
 		pasteBox.appendChild(name);
 		pasteBox.appendChild(userInputVal);
@@ -78,9 +77,17 @@ window.onload = function() {
 	});
 
 	userInput.addEventListener("keyup", function(evt) {
-		userInputVal.innerHTML = userInputVal.innerHTML + evt.target.value;
-		latestInput = userInputVal.innerHTML;
-		evt.target.value = '';
+		if(evt.keyCode === 8) {
+			const userInputVal = document.getElementById(`userInputVal${userInputCounter}`);
+			userInputVal.innerHTML = userInputVal.innerHTML.slice(0, -1);
+			latestInput = userInputVal.innerHTML;
+		}
+		else if(evt.keyCode !== 13) {
+			const userInputVal = document.getElementById(`userInputVal${userInputCounter}`);
+			userInputVal.innerHTML = userInputVal.innerHTML + evt.target.value;
+			latestInput = userInputVal.innerHTML;
+			evt.target.value = '';
+		}
 	});
 
 	userInputForm.addEventListener("submit", function(evt) {
@@ -91,7 +98,6 @@ window.onload = function() {
 		resetCommandLine();
 	});
 
-	const contentsArr = ["Resume","Pic","Skills","About"]
 
 	function handleInput(latestInput) {
 		ajaxWrapper('GET','/command', latestInput, function(data) {
@@ -101,7 +107,11 @@ window.onload = function() {
 			pasteBox.innerHTML = pasteBox.innerHTML + data;
 			pasteBox.innerHTML = pasteBox.innerHTML + '</br>';
 			pasteBox.appendChild(name);
+			const userInputVal = document.createElement("span");
+			userInputVal.id = `userInputVal${++userInputCounter}`;
+			pasteBox.appendChild(userInputVal);
 			pasteBox.appendChild(box);
+			focusUserInput();
 		});
 	}
 

