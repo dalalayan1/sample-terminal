@@ -1,3 +1,4 @@
+
 var AT = AT || {};
 
 window.onload = function() {
@@ -35,8 +36,23 @@ window.onload = function() {
 		});
 	}
 
+	const BASE_URL = 'http://localhost:8080';
+
 	function init() {
 		initializeAutoTyping();
+
+	}
+
+	function ajaxWrapper(method, url, param, callback){
+		var xhttp = new XMLHttpRequest();
+		xhttp.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200) {
+			  callback(this.responseText);
+			}
+		  };
+		  xhttp.open(method, BASE_URL + url + '?payload=' + param, true);
+		  xhttp.send();
+		//   xhttp.setRequestHeader("Access-Control-Allow-Origin", "*");
 	}
 
 	function focusUserInput() {
@@ -78,15 +94,15 @@ window.onload = function() {
 	const contentsArr = ["Resume","Pic","Skills","About"]
 
 	function handleInput(latestInput) {
-		pasteBox.contains(box) && pasteBox.removeChild(box);
-		pasteBox.innerHTML = pasteBox.innerHTML + '</br>';
-		switch(latestInput) {
-			case 'ls':
-				contentsArr.forEach(content => pasteBox.innerHTML = pasteBox.innerHTML + content + " ");
-				break;
-			default:
-				pasteBox.innerHTML = pasteBox.innerHTML + '-bash: ' + latestInput +': command not found';
-		}
+		ajaxWrapper('GET','/command', latestInput, function(data) {
+			console.log(data);
+			pasteBox.contains(box) && pasteBox.removeChild(box);
+			pasteBox.innerHTML = pasteBox.innerHTML + '</br>';
+			pasteBox.innerHTML = pasteBox.innerHTML + data;
+			pasteBox.innerHTML = pasteBox.innerHTML + '</br>';
+			pasteBox.appendChild(name);
+			pasteBox.appendChild(box);
+		});
 	}
 
 	init();
